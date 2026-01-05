@@ -65,6 +65,12 @@ Alternating between full forward (+1) and full reverse (−1) can cause voltage 
 - When braking, most robots turn slightly due to uneven weight distribution. This could be modeled for and accounted for to allow the controller to predict instead of react.
 - If you want to ensure no wheel slip (e.g. for drive encoders), consider making a predictive coasting model. You can measure the coasting deceleration and model it similarly to this braking model. This will be much slower than braking, but it will ensure no wheel slip. This would also require an implementation of acceleration constraints to avoid wheel slippage when accelerating.
 
+| Speed  | Dominant effect  | Model          |
+| ------ | ---------------- | -------------- |
+| High   | Sliding friction | Constant force |
+| Medium | Mixed            | Nonlinear      |
+| Low    | Back-EMF         | Linear         |
+
 # Thanks
 Thanks to the Pedro Pathing team for being interested and supporting this
 - Havish 12808, Baron 20077, Davis 12649, Logan 18145a
