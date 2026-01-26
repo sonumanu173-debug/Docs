@@ -16,7 +16,7 @@ Using this method, the world record auto was achieved, as well as helping many o
 # Tuning
 1. Tune Heading PID
 2. Run PredictiveBrakingTuner. This will give you values for `kQuadratic` and `kLinear`.
-In FollowerConstants, add `.predictiveBrakingCoefficents(kP, kQuadratic, kLinear)`
+In FollowerConstants, add `.predictiveBrakingCoefficents(new PredictiveBrakingCoefficients(kP, kQuadratic, kLinear))`
 3. Insert the values given from the tuner into the method. Use a starting kP value around 0.1.
 `kQuadratic` represents the braking distance proportional to velocity squared. This is caused by constant forces such as sliding friction. kLinear represents braking distance proportional to velocity. This is caused by velocity-proportional braking distance such as back-EMF voltage and viscous friction. 
 Run LineTest and adjust kP to your liking. kP usually ranges from 0.05-0.3. kP changes are harder to notice and have minimal effects. However, tune kP as high as possible so it will give you the most holding strength and accuracy but without jittering the robot. You may also lower kP if you want smoother reactions.
