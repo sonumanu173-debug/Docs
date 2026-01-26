@@ -19,36 +19,40 @@ Instead of relying on a manually tuned derivative term to prevent overshoot, thi
 - **Sharper stops:** can feel less smooth as the robot slides to a stop
 - **No acceleration constraints:** always uses maximum deceleration when braking
 
-## Performance Highlights
-- Achieves near maximum stopping performance with active correction.
-
 # Back-EMF Braking: Modeling and Control
-Applying small reverse motor power locks the wheels using internal back-EMF, letting the robot’s momentum resist motion without drawing voltage. This achieves the theoretical maximum deceleration as the robot slides to a stop. Higher voltage results 
+Applying small reverse motor power locks the wheels using internal back-EMF, letting the robot’s momentum resist motion without drawing voltage. This achieves the theoretical maximum deceleration as the robot slides to a stop.
 
 In reality, braking is not perfectly linear. When the wheels lock, they slide across the floor, introducing nonlinear friction that must be accounted for to maximize deceleration.
 
 ## Modeling Real-World Behavior
-The controller measures real-world braking by letting the robot slide to a stop with a small reverse voltage and plotting velocity versus stopping distance. Braking behavior tends to follow two components:
+The controller measures real-world braking by allowing the robot to slide to a stop with a small reverse voltage.
+When plotting velocity versus stopping distance, the relationship typically shows a combination of linear and quadratic terms.
 
-- **Linear term:** braking distance that is proportional to velocity; caused by velocity-proportional braking forces such as back-EMF voltage, viscous friction, and controller delay.
-- **Quadratic term:** braking distance proportional to velocity squared; caused by constant forces such as sliding friction at high speeds.
+- **Linear term**: braking distance proportional to velocity; caused by velocity-dependent braking forces such as back-EMF voltage, viscous friction, and controller delay.
+- **Quadratic term**: braking distance proportional to velocity squared; caused by constant forces such as sliding friction at high speeds.
 
-A standard derivative term models only linear deceleration, which is insufficient during high-speed braking due to wheel slippage. This forces PIDs to lower the responsiveness of the controller in order to not overshoot at high speeds and undershoot at low speeds. Some have had to rely on creating a secondary PID depending on the error making one more aggressive and one less aggressive.
-By measuring actual behavior instead of assuming it, the controller predicts slippage rather than trying to prevent it.
+| Speed  | Dominant effect  | Model               | Braking distance ∝ |
+| ------ | ---------------- | ------------------- | ------------------ |
+| High   | Sliding friction | Quadratic-dominated | (v^2)              |
+| Medium | Mixed            | Linear + quadratic  | (v + v^2)          |
+| Low    | Back-EMF         | Linear-dominated    | (v)                |
+
+A combined linear–quadratic braking model applies across all speeds.
+At low speeds, the linear term dominates, while at high speeds, the quadratic term dominates.
+
+## Why not use a traditional Derivative term?
+A standard PID controller struggles with high-speed braking because it assumes linear deceleration, while the robot actually slides and experiences non-linear friction effects. Using only a derivative term forces you to lower the aggressiveness to prevent oscillation, which reduces both responsiveness and maximum speed. Or rely on creating a secondary PID depending on the error making one more aggressive and one less aggressive. But this gets complicated when tuning manually and doesnt fully satify the robot real behavior. By measuring actual behavior instead of assuming it, the controller predicts slippage rather than trying to prevent it.
 
 ## Effects of Robot Mass:
 - Lighter robots slide farther at high speeds, increasing the quadratic term while reducing the linear term due to less floor friction.
 - Heavier robots increase friction with the floor, resulting in stronger linear braking and shorter sliding distances.
 
 # Prerequisites
-- Mecanum Wheels (support for swerve and tank coming soon)
+- Mecanum wheels (support for swerve and tank coming soon)
 - Accurate velocity sensing required (e.g., dead wheels, IMU); drive encoders alone are insufficient due to wheel slip
 - Motors must support internal back-EMF braking
 
 # Common Questions
-## Why not use a traditional Derivative term?
-A standard PID controller struggles with high-speed braking because it assumes linear deceleration, while the robot actually slides and experiences non-linear friction effects. Using only a derivative term forces you to lower the proportional gain to prevent oscillation, which reduces both responsiveness and maximum speed.
-
 ## Does maintaining traction with the ground result in faster deceleration?
 Most robots maintain significant friction with the ground when they are sliding, which leads to immediate stops.
 Only if your robot is so light that it completely removes contact with the ground when braking will it potentially have faster deceleration.
@@ -61,20 +65,14 @@ Alternating between full forward (+1) and full reverse (−1) can cause voltage 
 # Future Ideas:
 - When braking, most robots turn slightly due to uneven weight distribution. This could be modeled for and accounted for to allow the controller to predict instead of react.
 - If you want to ensure no wheel slip (e.g. for drive encoders), consider making a predictive coasting model. You can measure the coasting deceleration and model it similarly to this braking model. This will be much slower than braking, but it will ensure no wheel slip. This would also require an implementation of acceleration constraints to avoid wheel slippage when accelerating.
-
-| Speed  | Dominant effect  | Model          |
-| ------ | ---------------- | -------------- |
-| High   | Sliding friction | Constant force |
-| Medium | Mixed            | Nonlinear      |
-| Low    | Back-EMF         | Linear         |
+- Acceleration constraints and deceleration constraints (useful for decelerating towards a wall).
+- Heading correction while tuning - lowers the required number of field tiles to tune on.
+- Predicting the next path
+- Support for swerve and tank by lowering translational priority or creating a dynamic lookahead projected from the robot's reaction time.
 
 # Thanks
 Thanks to the Pedro Pathing team for being interested and supporting this
 - Havish 12808, Baron 20077, Davis 12649, Logan 18145a
-Thanks to beta testers:
-Kabir | 362c | 22131hm
-Adi V | 25710 | 19772a
-Dylan
 
 Thanks to Ashay from 19745 Turtle Walkers for being the first tester of the controller and getting a world record autonomous!!
 
