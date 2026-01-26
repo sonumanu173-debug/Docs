@@ -1,9 +1,17 @@
-# Using Predictive Braking
+---
+title: "Using Predictive Braking"
+---
 
 Predictive Braking, also known as Black Ice, is a positional control technique that maximizes deceleration by measuring the robot’s braking behavior rather than assuming it.
 
-Note: predictive braking was designed for robots with mecanum wheels with odometry wheels.
-Works best with robots with a balanced center of mass and robots that do not lift off the ground or turn dramatically when braking. Do not worry if your robot does these things. This algorithm will still work. Just consider adding more weight to your robot.
+# Why use predictive braking?
+Automatically tuned and maximizes the deceleration speed and accuracy of your robot.
+Using this method, the world record auto was achieved, as well as helping many other teams autos.
+
+# Prerequisites
+- **Mecanum wheels** (support for swerve and tank coming soon)
+- **Odometry Wheels** (drive encoders alone are insufficient due to wheel slip)
+- Works best with robots with a balanced center of mass and robots that do not lift off the ground or turn dramatically when braking. Do not worry if your robot does these things. This algorithm will still work. Just consider adding more weight to your robot.
 
 # Tuning
 1. Tune Heading PID
@@ -19,10 +27,6 @@ Run LineTest and adjust kP to your liking. kP usually ranges from 0.05-0.3. kP c
 For predictive braking to work as fast as possible, continue your PathChain unless it needs to come to a complete stop.
 Use curves instead of 90-degree line segments.
 In future versions, this will be able to follow 90-degree changes in direction without stopping by predicting the next path.
-
-Results:
-Automatically tuned and maximizes the deceleration speed and accuracy of your robot.
-Using this method, the world record auto was achieved, as well as helping many other teams autos.
 
 # How is it used in Pedro Path?
 
