@@ -61,7 +61,7 @@ However, this algorithm is still being improved upon. More things that will be e
 - **Acceleration constraints** and deceleration constraints (useful for decelerating towards a wall).
 - **Predicting the next path** - allows for instant changes in direction without coming to a complete stop
 - **Support for swerve and tank** by lowering translational priority or creating a dynamic lookahead projected from the robot's reaction time.
-- If you want to ensure no wheel slip (e.g., for drive encoders), consider making a predictive coasting model. You can measure the coasting deceleration and model it similarly to this braking model. This will be much slower than braking, but it will ensure no wheel slip. This would also require an implementation of acceleration constraints to avoid wheel slippage when accelerating.
+- If you want to ensure no wheel slip (e.g., for drive encoders), consider making a predictive coasting model. You can measure the coasting deceleration and model it similarly to this braking model. This will be much slower than braking, but it will ensure no wheel slip and will save battery voltage. This would also require an implementation of acceleration constraints to avoid wheel slippage when accelerating.
 
 # Thanks
 Thanks to the Pedro Pathing team for being interested and supporting this
