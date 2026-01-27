@@ -53,14 +53,4 @@ Consider adding weight to lighter robots to increase their friction with the gro
 ## Why not use full-power reversal?
 Alternating between full forward (+1) and full reverse (−1) can cause voltage spikes that may burn out or reset the control hub. Instead, braking is applied with a small opposite voltage. Even a tiny voltage (e.g., −0.0001) locks the wheels like zero-power brake mode, using the motor’s momentum to stop without consuming significant energy. However, if the opposite voltage is too low, it won’t provide enough braking once the robot slows down where the motor’s momentum is no longer sufficient to brake.
 
-# Future Improvements
-This algorithm has shown its advantages in speed and accuracy over manually tuning PIDFs.
-However, this algorithm is still being improved upon. More things that will be experimented with are: 
-- **Predictive Turning** - when braking, most robots turn slightly due to uneven weight distribution. This could be modeled for and accounted for to allow the controller to predict rather than react.
-- **Heading correction while tuning** - lowers the amount of space required to tune
-- **Acceleration constraints** and deceleration constraints (useful for decelerating towards a wall).
-- **Predicting the next path** - allows for instant changes in direction without coming to a complete stop
-- **Support for swerve and tank** by lowering translational priority or creating a dynamic lookahead projected from the robot's reaction time.
-- If you want to ensure no wheel slip (e.g., for drive encoders), consider making a predictive coasting model. You can measure the coasting deceleration and model it similarly to this braking model. This will be much slower than braking, but it will ensure no wheel slip and will save battery voltage. This would also require an implementation of acceleration constraints to avoid wheel slippage when accelerating.
-
 ### Learn more: Ask Jacob in the [Pedro Pathing Discord](https://discord.gg/xx48fsgtjB).
