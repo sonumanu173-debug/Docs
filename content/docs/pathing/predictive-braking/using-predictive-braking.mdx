@@ -2,11 +2,12 @@
 title: "Using Predictive Braking"
 ---
 
-Predictive Braking, also known as Black Ice, is a positional control technique that maximizes deceleration by measuring the robot’s braking behavior rather than assuming it.
+Predictive Braking is a positional control technique that maximizes deceleration by measuring the robot’s braking behavior rather than assuming it.
 
-# Why use predictive braking?
-Automatically tuned and maximizes the deceleration speed and accuracy of your robot.
-Using this method, the world record auto was achieved, as well as helping many other teams autos.
+# Why use Predictive Braking?
+Automatically tunes and maximizes the deceleration speed and accuracy of your robot.
+
+Using this method, the world record auto was achieved, as well as speeding up many other teams' autos.
 
 # Prerequisites
 - **Mecanum wheels** (support for swerve and tank coming soon)
@@ -21,7 +22,7 @@ In FollowerConstants, add `.predictiveBrakingCoefficents(new PredictiveBrakingCo
 `kQuadratic` represents the braking distance proportional to velocity squared. This is caused by constant forces such as sliding friction. kLinear represents braking distance proportional to velocity. This is caused by velocity-proportional braking distance such as back-EMF voltage and viscous friction. 
 Run LineTest and adjust kP to your liking. kP usually ranges from 0.05-0.3. kP changes are harder to notice and have minimal effects. However, tune kP as high as possible so it will give you the most holding strength and accuracy but without jittering the robot. You may also lower kP if you want smoother reactions.
 
- Currently, it is recommended to turn off centripetal forces in auto, as predictive braking naturally accounts for this.
+Currently, it is recommended to turn off centripetal forces in auto, as predictive braking naturally accounts for this.
 
 # Effective Predictive Braking Pathing
 For predictive braking to work as fast as possible, continue your PathChain unless it needs to come to a complete stop.
@@ -29,16 +30,9 @@ Use curves instead of 90-degree line segments.
 In future versions, this will be able to follow 90-degree changes in direction without stopping by predicting the next path.
 
 # How is it used in Pedro Path?
-
 In Pedro Pathing, it replaces the previous drive and translational PIDF controllers, using a single unified controller to regulate the robot’s position along the path.
 The system employs two controllers: one tangent to the path, where the error is the remaining distance, and one perpendicular to the path, which corrects lateral deviation.
 `PredictiveBrakingTuner` automatically measures the robot’s braking behavior and builds a model that enables accurate braking prediction and control.
 
 This algorithm has shown its advantages in speed and accuracy over manually tuning PIDFs.
-However, this algorithm is still being improved upon. More things that will be experimented with are: 
-- Predictive turning,
-- Predicting the next path
-- Looptime performance
-- Heading correction during tuning
-
-
+However, this algorithm is still being improved upon. See [future improvements here](https://github.com/Pedro-Pathing/Docs/blob/Predictive-Braking/content/docs/pathing/predictive-braking/index.mdx#future-improvements).
