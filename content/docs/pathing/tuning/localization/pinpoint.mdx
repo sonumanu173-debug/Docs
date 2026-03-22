@@ -36,10 +36,29 @@ return new FollowerBuilder(followerConstants, hardwareMap)
 ```
 
 ### Offsets
-
 You must also set your odometry pod offsets, which is where they are
 relative to your robot's center of rotation. You can use the diagram below
 to find them. **Offsets are in inches.**
+
+To find your pod offsets you can either do them Automatically or Manually:
+### Automatic Pod Offsets
+
+Pedro 2.1 offers an automatic pod offset tuner that
+gets the odometry pod offsets for both the forward and the strafer pod. 
+
+**Instructions:**
+1. Set both the Pod Offsets in constants to 0 and push to bot
+2. Place the robot in a corner and center it
+3. Run the offsets tuner
+4. Take the robot off the corner and Rotate 
+  the robot 180 degrees
+5. Stop the tuner after you get the offsets and place them into
+  localizer constants.
+
+### Manual Pod Offsets
+
+You can also manually find your pod offsets, measure your pod offsets
+using the diagram below.
 
 <img
   className="inline-block dark:hidden"
@@ -53,19 +72,7 @@ to find them. **Offsets are in inches.**
   alt="Odometry Pod Offset Diagram"
 />
 
-### Automatic Pod Offsets
 
-Pedro V2.1 Offers a specific automatic pod offset tuner that
-gets the Odometry Pod Offsets for both the forward and the
-strafer pod. **Currently only compatible with Pinpoint+2 ODO Setup.**
-
-**Instructions**
-- Place the robot in a corner and center it
-- Run the offsets tuner
-- Take the robot off the corner and Rotate 
-  the robot 180 degrees
-- Stop the Tuner after you get the offsets and place them into
-  loclizer constants.
 
 Once you have found your offsets, add them to your localizer constants by
 using `.forwardPodY()` and `.strafePodX()`.
