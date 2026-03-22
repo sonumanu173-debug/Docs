@@ -53,6 +53,19 @@ to find them. **Offsets are in inches.**
   alt="Odometry Pod Offset Diagram"
 />
 
+### Automatic Pod Offsets
+
+Pedro V2.1 Offers a specific automatic pod offset tuner that
+gets the Odometry Pod Offsets for both the forward and the
+strafer pod. **Currently only compatible with Pinpoint+2 ODO Setup.**
+
+**Instructions**
+- Place the robot in a corner and center it
+- Run the offsets tuner
+- Rotate the robot 180 degrees
+- Stop the Tuner after you get the offsets and place them into
+  loclizer constants.
+
 Once you have found your offsets, add them to your localizer constants by
 using `.forwardPodY()` and `.strafePodX()`.
 
